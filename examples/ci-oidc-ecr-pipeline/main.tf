@@ -33,3 +33,14 @@ module "github_oidc_role" {
     ]
   })
 }
+
+module "ecr_repo" {
+  source = "../../modules/ecr-repo"
+
+  name = "my-app"
+
+  tags = {
+    Project = "ci-oidc-ecr-demo"
+  }
+}
+
