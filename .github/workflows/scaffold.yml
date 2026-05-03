@@ -13,17 +13,28 @@ jobs:
 
       - name: Create folder structure
         run: |
-          mkdir -p modules/{vpc-minimal,iam-oidc-github,ecr-repo,eks-minimal,irsa-role}
+          # Create module folders
+          mkdir -p modules/{s3-bucket,vpc-minimal,iam-oidc-github,ecr-repo,eks-minimal,irsa-role}
+
+          # Create example folders
           mkdir -p examples/{vpc-minimal-basic,ci-oidc-ecr-pipeline}
+
+          # Create global budgets folder
           mkdir -p global/budgets
 
-          for m in vpc-minimal iam-oidc-github ecr-repo eks-minimal irsa-role; do
+          # Create boilerplate files for all modules
+          for m in s3-bucket vpc-minimal iam-oidc-github ecr-repo eks-minimal irsa-role; do
             touch modules/$m/main.tf modules/$m/variables.tf modules/$m/outputs.tf modules/$m/README.md
           done
 
+          # Example stacks
           touch examples/vpc-minimal-basic/{main.tf,backend.tf,providers.tf}
           touch examples/ci-oidc-ecr-pipeline/{main.tf,backend.tf,providers.tf}
+
+          # Global budgets
           touch global/budgets/{main.tf,variables.tf,README.md}
+
+          # Root README
           touch README.md
 
       - name: Commit scaffold
