@@ -20,7 +20,7 @@ output "cluster_arn" {
 
 output "node_group_role_arns" {
   description = "Map of node group IAM role ARNs."
-  value       = { for k, v in aws_iam_role.node_group : k => v.arn }
+  value       =  try({ for k, v in aws_iam_role.node_group : k => v.arn }, {})
 }
 
 output "oidc_provider_arn" {
