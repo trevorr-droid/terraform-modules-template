@@ -1,0 +1,24 @@
+output "cluster_name" {
+  description = "EKS cluster name."
+  value       = aws_eks_cluster.this.name
+}
+
+output "cluster_endpoint" {
+  description = "EKS cluster endpoint."
+  value       = aws_eks_cluster.this.endpoint
+}
+
+output "cluster_ca_certificate" {
+  description = "EKS cluster CA certificate."
+  value       = aws_eks_cluster.this.certificate_authority[0].data
+}
+
+output "cluster_arn" {
+  description = "EKS cluster ARN."
+  value       = aws_eks_cluster.this.arn
+}
+
+output "node_group_role_arns" {
+  description = "Map of node group IAM role ARNs."
+  value       = { for k, v in aws_iam_role.node_group : k => v.arn }
+}
