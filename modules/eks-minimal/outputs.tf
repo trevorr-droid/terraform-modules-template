@@ -22,3 +22,13 @@ output "node_group_role_arns" {
   description = "Map of node group IAM role ARNs."
   value       = { for k, v in aws_iam_role.node_group : k => v.arn }
 }
+
+output "oidc_provider_arn" {
+  value       = aws_iam_openid_connect_provider.this.arn
+  description = "ARN of the OIDC provider for IRSA"
+}
+
+output "oidc_provider_url" {
+  value       = aws_eks_cluster.this.identity[0].oidc[0].issuer
+  description = "OIDC issuer URL for IRSA"
+}
