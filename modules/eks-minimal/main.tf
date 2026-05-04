@@ -26,6 +26,32 @@ resource "aws_eks_cluster" "this" {
 
   tags = var.tags
 }
+data "tls_certificate" "oidc" {
+  url = aws_eks_cluster.this.identity[0].oidc[0].issuer
+
+  depends_on = [
+    aws_eks_cluster.this
+  ]
+}
+
+resource "aws_iam_openid_connect_provider" "this" {
+  url = aws_eks_cluster.this.identity[0].oidc[0].issuer
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = [
+    data.tls_certificate.oidc.certificates[0].sha1_fingerprint,
+  ]
+
+  tags = var.tags
+
+  depends_on = [
+    aws_eks_cluster.this,
+    data.tls_certificate.oidc
+  ]
+}
 
 resource "aws_iam_role" "node_group" {
   for_each = var.node_groups
